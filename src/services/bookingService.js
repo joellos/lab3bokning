@@ -1,14 +1,16 @@
-const API_BASE_URL = 'http://localhost:7135/api';
+// src/services/bookingService.js
+
+const API_BASE_URL = 'https://localhost:7135/api';
 
 class BookingService {
   // Hämta lediga bord för ett specifikt datum, tid och antal gäster
   async getAvailableTables(date, time, numberOfGuests) {
     try {
-      // Konvertera datum till rätt format (YYYY-MM-DD)
-      const formattedDate = date;
+      // Skapa DateTime-objekt för att bygga korrekt ISO-string
+      const bookingDateTime = new Date(`${date}T${time}:00.000Z`);
       
-      // Bygg URL med query parameters
-      const url = `${API_BASE_URL}/booking/available-tables?date=${formattedDate}&time=${time}&guests=${numberOfGuests}`;
+      // Bygg URL med rätt query parameters som matchar ditt API
+      const url = `${API_BASE_URL}/booking/available-tables?BookingDateTime=${bookingDateTime.toISOString()}&NumberOfGuests=${numberOfGuests}`;
       
       console.log('Fetching available tables from:', url);
       
@@ -20,7 +22,9 @@ class BookingService {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
 
       const data = await response.json();
@@ -29,7 +33,13 @@ class BookingService {
       return data;
     } catch (error) {
       console.error('Error fetching available tables:', error);
-      throw new Error('Kunde inte hämta lediga bord. Kontrollera att servern körs.');
+      
+      // Förbättrad felhantering med mer specifika meddelanden
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error('Kunde inte ansluta till servern. Kontrollera att API:et körs på http://localhost:5062');
+      }
+      
+      throw new Error(`Kunde inte hämta lediga bord: ${error.message}`);
     }
   }
 
@@ -66,9 +76,15 @@ class BookingService {
   // Test-funktion för att kontrollera API-anslutning
   async testConnection() {
     try {
-      const response = await fetch(`${API_BASE_URL}/booking/available-tables?date=2024-01-01&time=12:00&guests=2`, {
+      const testDate = new Date('2024-12-15T12:00:00.000Z').toISOString();
+      const response = await fetch(`${API_BASE_URL}/booking/available-tables?BookingDateTime=${testDate}&NumberOfGuests=2`, {
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+      
+      console.log('Connection test response status:', response.status);
       return response.ok;
     } catch (error) {
       console.error('Connection test failed:', error);

@@ -4,6 +4,7 @@ import React from 'react';
 import { useBookingContext } from '../../context/BookingContext';
 import SelectDateTime from './SelectDateTime';
 import SelectTable from './SelectTable';
+import CustomerDetails from './CustomerDetails';
 
 const BookingFlow = () => {
   const { bookingData } = useBookingContext();
@@ -23,16 +24,7 @@ const BookingFlow = () => {
       case 2:
         return <SelectTable />;
       case 3:
-        return (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Kontaktuppgifter
-            </h2>
-            <p className="text-gray-600">
-              CustomerDetails-komponenten kommer här...
-            </p>
-          </div>
-        );
+        return <CustomerDetails />;
       case 4:
         return (
           <div className="text-center py-12">
@@ -142,7 +134,11 @@ const BookingFlow = () => {
                     id: bookingData.selectedTable.id,
                     tableNumber: bookingData.selectedTable.tableNumber,
                     capacity: bookingData.selectedTable.capacity
-                  } : null
+                  } : null,
+                  customerName: bookingData.customerName,
+                  email: bookingData.email,
+                  phoneNumber: bookingData.phoneNumber,
+                  specialRequests: bookingData.specialRequests
                 }, null, 2)}
               </pre>
             </div>

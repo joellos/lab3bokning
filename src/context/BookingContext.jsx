@@ -16,6 +16,7 @@ const initialState = {
   customerName: '',
   phoneNumber: '',
   email: '',
+  specialRequests: '',
   
   // Steg 4: Bekräftelse (kommer senare)
   bookingConfirmation: null,
@@ -137,10 +138,12 @@ export const BookingProvider = ({ children }) => {
   };
 
   const isStep3Valid = () => {
-    return bookingData.customerName.trim() &&
-           bookingData.phoneNumber.trim() &&
-           bookingData.email.trim() &&
-           bookingData.email.includes('@');
+    // Validering för kontaktuppgifter
+    const nameValid = bookingData.customerName && bookingData.customerName.trim().length >= 2;
+    const emailValid = bookingData.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingData.email);
+    const phoneValid = bookingData.phoneNumber && /^[\d\s\-\+\(\)]{8,15}$/.test(bookingData.phoneNumber.replace(/\s/g, ''));
+    
+    return nameValid && emailValid && phoneValid;
   };
 
   // Helper function för att få aktuell steg-validering
@@ -171,7 +174,7 @@ export const BookingProvider = ({ children }) => {
       customerName: bookingData.customerName.trim(),
       phoneNumber: bookingData.phoneNumber.trim(),
       email: bookingData.email.trim(),
-      specialRequests: '', // Kommer senare om vi lägger till detta
+      specialRequests: bookingData.specialRequests?.trim() || '',
     };
   };
 
