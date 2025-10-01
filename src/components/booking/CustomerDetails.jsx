@@ -282,25 +282,6 @@ const CustomerDetails = () => {
         </div>
       </form>
 
-      {/* Debug information (development only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-          <h4 className="font-semibold text-gray-700 mb-2">Debug Info:</h4>
-          <pre className="text-xs text-gray-600 overflow-auto">
-            {JSON.stringify({
-              customerData: {
-                customerName: bookingData.customerName,
-                email: bookingData.email,
-                phoneNumber: bookingData.phoneNumber,
-                specialRequests: bookingData.specialRequests,
-              },
-              errors: errors,
-              isValid: isStep3Valid(),
-              isSubmitting: isSubmitting
-            }, null, 2)}
-          </pre>
-        </div>
-      )}
     </div>
   );
 };

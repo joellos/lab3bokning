@@ -239,23 +239,7 @@ const SelectTable = () => {
         </button>
       </div>
 
-      {/* Debug info (remove in production) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-          <h4 className="font-semibold text-gray-700 mb-2">Debug Info:</h4>
-          <pre className="text-xs text-gray-600 overflow-auto">
-            {JSON.stringify({
-              availableTables: availableTables.length,
-              selectedTable: bookingData.selectedTable,
-              queryParams: {
-                date: bookingData.date,
-                time: bookingData.time,
-                guests: bookingData.numberOfGuests
-              }
-            }, null, 2)}
-          </pre>
-        </div>
-      )}
+  
     </div>
   );
 };

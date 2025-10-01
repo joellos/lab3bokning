@@ -238,23 +238,8 @@ const SelectDateTime = () => {
         </div>
       </form>
 
-      {/* Debug information (development only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-          <h4 className="font-semibold text-gray-700 mb-2">Debug Info:</h4>
-          <pre className="text-xs text-gray-600 overflow-auto">
-            {JSON.stringify({
-              bookingData: {
-                date: bookingData.date,
-                time: bookingData.time,
-                numberOfGuests: bookingData.numberOfGuests,
-              },
-              errors: errors,
-              isValid: isStep1Valid()
-            }, null, 2)}
-          </pre>
-        </div>
-      )}
+    
+      
     </div>
   );
 };
